@@ -10,9 +10,13 @@ export default defineConfig({
   server: {
     fs: {
       strict: true,
-      allow: ['.']
+      allow: ['.'],
+      deny: ['**/backend/**']
     }
   },
   root: '.',
-  base: './'
+  base: './',
+  build: {
+    outDir: 'dist',
+  }
 })

@@ -10,6 +10,8 @@ import {
   Menu, X
 } from 'lucide-react';
 import ReferralNetwork from '../utils/ReferralNetwork';
+import { FloatingDock } from './ui/FloatingDock';
+import { HomeIcon, NetworkIcon, ChartIcon, UserGroupIcon, SettingsIcon, ExpandIcon, CollapseIcon, SidebarIcon, GraphIcon } from './ui/Icons';
 
 // Add CSS keyframes
 const animationStyles = `
@@ -286,10 +288,10 @@ const ReferralDashboard = () => {
         </h3>
         <div style={{ display: 'grid', gap: '1rem', position: 'relative', zIndex: 1 }}>
           {[
-            { label: 'Total Users', value: animatedStats.totalUsers, icon: '👥', gradient: 'linear-gradient(90deg, #ff9a9e 0%, #fecfef 50%, #ff9a9e 100%)', bgGradient: 'linear-gradient(135deg, rgba(255,154,158,0.2) 0%, rgba(254,207,239,0.2) 100%)' },
-            { label: 'Total Referrals', value: animatedStats.totalReferrals, icon: '🔗', gradient: 'linear-gradient(90deg, #a8edea 0%, #fed6e3 50%, #a8edea 100%)', bgGradient: 'linear-gradient(135deg, rgba(168,237,234,0.2) 0%, rgba(254,214,227,0.2) 100%)' },
-            { label: 'Average Referrals', value: animatedStats.avgReferrals, icon: '📈', gradient: 'linear-gradient(90deg, #ffecd2 0%, #fcb69f 50%, #ffecd2 100%)', bgGradient: 'linear-gradient(135deg, rgba(255,236,210,0.2) 0%, rgba(252,182,159,0.2) 100%)' },
-            { label: 'Network Density', value: `${animatedStats.networkDensity}%`, icon: '🌐', gradient: 'linear-gradient(90deg, #a8edea 0%, #fed6e3 50%, #a8edea 100%)', bgGradient: 'linear-gradient(135deg, rgba(168,237,234,0.2) 0%, rgba(254,214,227,0.2) 100%)' }
+            { label: 'Total Users', value: animatedStats.totalUsers, icon: '👥', headerColor: 'linear-gradient(135deg, #ff9a9e, #fecfef)', contentBg: '#ffffff' },
+            { label: 'Total Referrals', value: animatedStats.totalReferrals, icon: '🔗', headerColor: 'linear-gradient(135deg, #a8edea, #fed6e3)', contentBg: '#ffffff' },
+            { label: 'Average Referrals', value: animatedStats.avgReferrals, icon: '📈', headerColor: 'linear-gradient(135deg, #ffecd2, #fcb69f)', contentBg: '#ffffff' },
+            { label: 'Network Density', value: `${animatedStats.networkDensity}%`, icon: '🌐', headerColor: 'linear-gradient(135deg, #a8edea, #fed6e3)', contentBg: '#ffffff' }
           ].map((stat, index) => (
             <motion.div 
               key={stat.label}
@@ -297,65 +299,102 @@ const ReferralDashboard = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.2, duration: 0.5 }}
               style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center', 
-                padding: '1.5rem', 
-                background: stat.bgGradient, 
-                borderRadius: '18px',
-                backdropFilter: 'blur(15px)',
-                border: '1px solid rgba(255,255,255,0.3)',
+                background: '#ffffff',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                border: '1px solid rgba(0,0,0,0.05)',
                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                position: 'relative',
-                overflow: 'hidden'
+                position: 'relative'
               }}
               whileHover={{ 
                 scale: 1.03, 
-                background: 'rgba(255,255,255,0.3)',
-                boxShadow: '0 15px 35px rgba(0,0,0,0.2)',
-                y: -2
+                boxShadow: '0 16px 48px rgba(0,0,0,0.12)',
+                y: -4
               }}
               whileTap={{ scale: 0.98 }}
             >
-              {/* Card shine effect */}
+              {/* Top 20% Header Section */}
               <div style={{
-                position: 'absolute',
-                top: 0,
-                left: '-100%',
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-                animation: `shine ${3 + index}s ease-in-out infinite`,
-                animationDelay: `${index * 0.5}s`
-              }}></div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative', zIndex: 1 }}>
+                height: '20%',
+                minHeight: '60px',
+                background: stat.headerColor,
+                borderRadius: '20px 20px 0 0',
+                padding: '0.8rem 1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                position: 'relative'
+              }}>
+                {/* Header shine effect */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                  animation: `shine ${3 + index}s ease-in-out infinite`,
+                  animationDelay: `${index * 0.5}s`
+                }}></div>
+                
                 <motion.span 
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
-                  style={{ fontSize: '1.8rem' }}
+                  style={{ 
+                    fontSize: '1.5rem',
+                    filter: 'drop-shadow(0 2px 4px rgba(255,255,255,0.3))',
+                    position: 'relative',
+                    zIndex: 1
+                  }}
                 >
                   {stat.icon}
                 </motion.span>
-                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '1.1rem', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>{stat.label}</span>
-              </div>
-              <motion.span 
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                style={{ 
-                  background: stat.gradient,
-                  backgroundSize: '200% 100%',
-                  animation: 'gradient-shift 4s ease infinite',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  fontWeight: '800', 
-                  fontSize: '1.8rem',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.6)',
                   position: 'relative',
                   zIndex: 1
-                }}
-              >
-                {stat.value}
-              </motion.span>
+                }}></div>
+              </div>
+
+              {/* Bottom 80% Content Section */}
+              <div style={{
+                height: '80%',
+                minHeight: '120px',
+                padding: '1.5rem',
+                background: stat.contentBg,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: '0.5rem'
+              }}>
+                <span style={{ 
+                  color: '#64748b', 
+                  fontWeight: '500', 
+                  fontSize: '0.9rem',
+                  letterSpacing: '0.5px',
+                  textTransform: 'uppercase'
+                }}>
+                  {stat.label}
+                </span>
+                
+                <motion.span 
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+                  style={{ 
+                    color: '#1e293b',
+                    fontWeight: '800', 
+                    fontSize: '2.2rem',
+                    lineHeight: '1'
+                  }}
+                >
+                  {stat.value}
+                </motion.span>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -367,90 +406,99 @@ const ReferralDashboard = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
         whileHover={{ scale: 1.02, y: -5 }}
         style={{
-          background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #f093fb 100%)',
-          backgroundSize: '200% 200%',
-          animation: 'gradient-shift 10s ease infinite',
-          padding: '2rem',
+          background: '#ffffff',
           borderRadius: '25px',
-          boxShadow: '0 25px 50px rgba(240, 147, 251, 0.4)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          position: 'relative',
-          overflow: 'hidden'
+          boxShadow: '0 12px 40px rgba(0,0,0,0.08)',
+          border: '1px solid rgba(0,0,0,0.05)',
+          overflow: 'hidden',
+          position: 'relative'
         }}
       >
-        {/* Animated background pattern */}
+        {/* Top 20% Header Section */}
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: 'radial-gradient(circle at 30% 80%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-          animation: 'float 15s ease-in-out infinite reverse',
-          zIndex: 0
-        }}></div>
-        <h3 style={{ 
-          color: '#ffffff', 
-          marginBottom: '2rem', 
-          fontSize: '1.5rem', 
-          fontWeight: '700',
-          textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-          background: 'linear-gradient(90deg, #fff 0%, #f0f8ff 50%, #fff 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundSize: '200% 100%',
-          animation: 'gradient-shift 6s ease infinite',
-          position: 'relative',
-          zIndex: 1
+          height: '20%',
+          minHeight: '80px',
+          background: 'linear-gradient(135deg, #f093fb, #f5576c)',
+          padding: '1.5rem 2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'relative'
         }}>
-          🏆 Top Referrers
-        </h3>
+          {/* Animated background pattern */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'radial-gradient(circle at 30% 80%, rgba(255,255,255,0.15) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 50%)',
+            animation: 'float 15s ease-in-out infinite reverse'
+          }}></div>
+          
+          <h3 style={{ 
+            color: '#ffffff', 
+            fontSize: '1.5rem', 
+            fontWeight: '700',
+            textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            position: 'relative',
+            zIndex: 1,
+            margin: 0
+          }}>
+            🏆 Top Referrers
+          </h3>
+          
+          <div style={{
+            width: '12px',
+            height: '12px',
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.6)',
+            position: 'relative',
+            zIndex: 1
+          }}></div>
+        </div>
+
+        {/* Bottom 80% Content Section */}
         <div style={{ 
-          height: '350px', 
-          background: 'rgba(255,255,255,0.2)', 
-          borderRadius: '18px', 
-          padding: '1rem', 
-          backdropFilter: 'blur(15px)',
-          border: '1px solid rgba(255,255,255,0.3)',
-          position: 'relative',
-          zIndex: 1,
-          boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
+          height: '80%',
+          minHeight: '350px', 
+          padding: '2rem', 
+          background: '#ffffff'
         }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={stats ? stats.topReferrers.slice(0, 5).map(user => ({ 
               user: user.userId.slice(-6), 
               referrals: user.referralCount 
             })) : []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.3)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
               <XAxis 
                 dataKey="user" 
-                stroke="#ffffff" 
+                stroke="#64748b" 
                 fontSize={12}
                 fontWeight="600"
               />
               <YAxis 
-                stroke="#ffffff" 
+                stroke="#64748b" 
                 fontSize={12}
                 fontWeight="600"
               />
               <Tooltip 
                 contentStyle={{ 
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  border: 'none',
-                  borderRadius: '10px',
-                  color: '#ffffff',
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+                  background: '#ffffff',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  borderRadius: '12px',
+                  color: '#1e293b',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
                 }}
               />
               <Bar 
                 dataKey="referrals" 
-                fill="url(#colorGradient)" 
                 radius={[8, 8, 0, 0]}
               >
                 <defs>
                   <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ffffff" stopOpacity={0.9}/>
-                    <stop offset="95%" stopColor="#ffffff" stopOpacity={0.4}/>
+                    <stop offset="5%" stopColor="#f093fb" stopOpacity={0.9}/>
+                    <stop offset="95%" stopColor="#f5576c" stopOpacity={0.6}/>
                   </linearGradient>
                 </defs>
               </Bar>
@@ -543,75 +591,82 @@ const ReferralDashboard = () => {
             transition={{ duration: 0.6 }}
             whileHover={{ scale: 1.01, y: -3 }}
             style={{
-              background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 50%, #43e97b 100%)',
-              backgroundSize: '200% 200%',
-              animation: 'gradient-shift 15s ease infinite',
-              padding: '2rem',
+              background: '#ffffff',
               borderRadius: '25px',
-              boxShadow: '0 25px 50px rgba(67, 233, 123, 0.3)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              position: 'relative',
-              overflow: 'hidden'
+              boxShadow: '0 12px 40px rgba(0,0,0,0.08)',
+              border: '1px solid rgba(0,0,0,0.05)',
+              overflow: 'hidden',
+              position: 'relative'
             }}
           >
-            {/* Animated background */}
+            {/* Top 20% Header Section */}
             <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundImage: 'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%)',
-              animation: 'float 18s ease-in-out infinite reverse',
-              zIndex: 0
-            }}></div>
-
-            <h4 style={{ 
-              color: '#ffffff', 
-              marginBottom: '1.5rem', 
-              fontSize: '1.5rem', 
-              fontWeight: '700',
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              position: 'relative',
-              zIndex: 1,
-              background: 'linear-gradient(90deg, #fff 0%, #f0f8ff 50%, #fff 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundSize: '200% 100%',
-              animation: 'gradient-shift 6s ease infinite'
+              height: '20%',
+              minHeight: '80px',
+              background: 'linear-gradient(135deg, #43e97b, #38f9d7)',
+              padding: '1.5rem 2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              position: 'relative'
             }}>
-              📈 Reach vs Direct Referrals Comparison
-            </h4>
+              {/* Animated background */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundImage: 'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%)',
+                animation: 'float 18s ease-in-out infinite reverse'
+              }}></div>
+
+              <h4 style={{ 
+                color: '#ffffff', 
+                fontSize: '1.5rem', 
+                fontWeight: '700',
+                textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                position: 'relative',
+                zIndex: 1,
+                margin: 0
+              }}>
+                📈 Reach vs Direct Referrals Comparison
+              </h4>
+              
+              <div style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: '50%',
+                background: 'rgba(255,255,255,0.6)',
+                position: 'relative',
+                zIndex: 1
+              }}></div>
+            </div>
             
+            {/* Bottom 80% Content Section */}
             <div style={{ 
-              height: '400px', 
-              backgroundColor: 'rgba(255, 255, 255, 0.2)', 
-              borderRadius: '18px', 
-              padding: '1rem',
-              backdropFilter: 'blur(15px)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              position: 'relative',
-              zIndex: 1,
-              boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
+              height: '80%',
+              minHeight: '400px', 
+              padding: '2rem',
+              background: '#ffffff'
             }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={reachData.slice(0, 12)}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.4)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
                   <XAxis 
                     dataKey="userId" 
-                    stroke="#ffffff" 
+                    stroke="#64748b" 
                     fontSize={12}
                     tickFormatter={(value) => value.slice(-6)}
                   />
-                  <YAxis stroke="#ffffff" fontSize={12} />
+                  <YAxis stroke="#64748b" fontSize={12} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                      border: '1px solid rgba(67, 233, 123, 0.3)',
+                      backgroundColor: '#ffffff', 
+                      border: '1px solid rgba(0,0,0,0.1)',
                       borderRadius: '12px',
-                      color: '#43e97b',
-                      backdropFilter: 'blur(10px)',
-                      boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
+                      color: '#1e293b',
+                      boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
                     }}
                     formatter={(value, name) => [
                       value, 
@@ -622,13 +677,13 @@ const ReferralDashboard = () => {
                   <Legend />
                   <Bar 
                     dataKey="directReferrals" 
-                    fill="url(#directGradient)"
+                    fill="#43e97b"
                     name="Direct Referrals"
                     radius={[4, 4, 0, 0]}
                   />
                   <Bar 
                     dataKey="totalReach" 
-                    fill="url(#reachGradient)"
+                    fill="#38f9d7"
                     name="Total Network Reach"
                     radius={[4, 4, 0, 0]}
                   />
@@ -2050,6 +2105,49 @@ const ReferralDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Floating Dock */}
+      <FloatingDock
+        items={[
+          {
+            title: "Dashboard",
+            icon: <HomeIcon />,
+            onClick: () => setActiveTab('overview')
+          },
+          {
+            title: "Network Graph",
+            icon: <NetworkIcon />,
+            onClick: () => setActiveTab('structure')
+          },
+          {
+            title: "Analytics",
+            icon: <ChartIcon />,
+            onClick: () => setActiveTab('bfs')
+          },
+          {
+            title: "Influencers",
+            icon: <UserGroupIcon />,
+            onClick: () => setActiveTab('influencers')
+          },
+          {
+            title: "Growth Simulation",
+            icon: <GraphIcon />,
+            onClick: () => setActiveTab('simulation')
+          },
+          {
+            title: "Toggle Sidebar",
+            icon: <SidebarIcon />,
+            onClick: () => setSidebarVisible(!sidebarVisible)
+          },
+          {
+            title: sidebarOpen ? "Collapse" : "Expand",
+            icon: sidebarOpen ? <CollapseIcon /> : <ExpandIcon />,
+            onClick: () => setSidebarOpen(!sidebarOpen)
+          }
+        ]}
+        desktopClassName="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+        mobileClassName="fixed bottom-8 right-8 z-50"
+      />
     </div>
   );
 };
