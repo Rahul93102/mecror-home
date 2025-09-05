@@ -91,7 +91,7 @@ const animationStyles = `
   }
 `;
 
-const ReferralDashboard = () => {
+const ReferralNetworkDashboard = () => {
   const [network] = useState(() => new ReferralNetwork());
   const [stats, setStats] = useState(null);
   const [simulationData, setSimulationData] = useState([]);
@@ -3144,4 +3144,4 @@ const ReferralDashboard = () => {
   );
 };
 
-export default ReferralDashboard;
+export default ReferralNetworkDashboard;

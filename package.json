@@ -1,7 +1,8 @@
 {
-  "name": "ecommerce",
+  "name": "referral-network-dashboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Interactive referral network analytics dashboard with advanced visualizations",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { BackgroundLines } from "./ui/BackgroundLines.jsx";
 
-export function AnimatedHomeScreen({ onComplete }) {
+export function SplashScreen({ onComplete }) {
   useEffect(() => {
     // Auto-navigate to dashboard after 4-5 seconds
     const timer = setTimeout(() => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ReferralDashboard from "./components/ReferralDashboard_Clean";
-import { AnimatedHomeScreen } from "./components/AnimatedHomeScreen";
+import ReferralNetworkDashboard from "./components/ReferralNetworkDashboard";
+import { SplashScreen } from "./components/SplashScreen";
 import "./App.css";
 
 function App() {
@@ -21,10 +21,10 @@ function App() {
       }}
     >
       {showHomeScreen ? (
-        <AnimatedHomeScreen onComplete={handleHomeComplete} />
+        <SplashScreen onComplete={handleHomeComplete} />
       ) : (
         <div style={{ width: "100%", height: "100vh" }}>
-          <ReferralDashboard />
+          <ReferralNetworkDashboard />
         </div>
       )}
     </div>

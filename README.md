@@ -1,53 +1,22 @@
-# Mercor Referral Network Challenge
+# Referral Network Analytics Dashboard
 
-A comprehensive React dashboard implementing the Mercor referral network challenge with professional UI, animations, and advanced analytics.
+A comprehensive React dashboard for visualizing and analyzing referral networks with professional UI, smooth animations, and advanced data analytics.
 
-## 📜 Table of Contents
+##  Features
 
-- [🚀 Features](#-features)
-- [🎨 Dashboard Features](#-dashboard-features)
-- [🏛️ Architectural Overview](#️-architectural-overview)
-- [🧠 Design Philosophy](#-design-philosophy)
-- [🛠️ Technology Stack Rationale](#️-technology-stack-rationale)
-- [📂 Codebase Guide](#-codebase-guide)
-- [🙌 Contribution Guidelines](#-contribution-guidelines)
-- [🛠 Technical Implementation](#-technical-implementation)
-- [📦 Installation & Setup](#-installation--setup)
-- [🔧 Dependencies](#-dependencies)
-- [🎯 Key Insights](#-key-insights)
-- [🚀 Future Enhancements](#-future-enhancements)
-- [📊 Performance Metrics](#-performance-metrics)
+### 📊 Interactive Analytics Dashboard
+- **Graph Structure Analysis**: Visual representation of referral network topology
+- **Network Reach Metrics**: BFS-based calculation of direct and indirect referrals
+- **Influencer Identification**: Advanced algorithms to identify key network influencers
+- **Growth Simulation**: Predictive modeling for network expansion scenarios
+- **Optimization Strategies**: Data-driven insights for network improvement
 
-## 🚀 Features
-
-### Part 1: Referral Graph Implementation
-
-- **Core Data Structure**: Complete referral network graph implementation
-- **Validation Rules**:
-  - No self-referrals
-  - Unique referrer constraint
-  - Acyclic graph maintenance
-- **Operations**: Add users, create referral links, query relationships
-
-### Part 2: Network Reach Analysis
-
-- **Total Referral Counting**: BFS-based calculation of direct and indirect referrals
-- **Top Referrers Ranking**: Sorted list of most influential users by reach
-- **Network Statistics**: Comprehensive network metrics and insights
-
-### Part 3: Advanced Influencer Identification
-
-- **Unique Reach Expansion**: Greedy algorithm to find minimal set covering maximum users
-- **Flow Centrality**: Identifies critical network brokers using betweenness-like metrics
-- **Comparison Metrics**: Three distinct influence measurement approaches
-
-### Part 4: Network Growth Simulation
-
-- **Growth Modeling**: Discrete-time simulation with configurable parameters
-- **Capacity Management**: Tracks referrer lifetime limits and transitions
-- **Target Prediction**: Calculates days needed to reach specific goals
-
-### Part 5: Bonus Optimization
+### 🎨 Modern UI/UX
+- **Professional Design**: Clean white containers with black borders and smooth animations
+- **Interactive Charts**: Responsive charts using Recharts library (Bar, Line, Pie charts)
+- **Motion Animations**: Smooth transitions and hover effects using Framer Motion
+- **Responsive Layout**: Mobile-friendly design with adaptive components
+- **Dark Sidebar Navigation**: Elegant sidebar with floating dock controls
 
 - **Binary Search Optimization**: Efficient minimum bonus calculation
 - **Adoption Modeling**: Monotonic probability functions
