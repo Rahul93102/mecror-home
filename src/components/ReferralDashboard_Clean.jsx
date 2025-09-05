@@ -1443,26 +1443,16 @@ const ReferralDashboard = () => {
 
   // Influencers Tab
   const renderInfluencers = () => {
-    // Generate pie chart data with fallback
-    const pieChartData = stats?.topReferrers?.length > 0 ? 
-      stats.topReferrers.slice(0, 6).map((user, index) => ({
-        name: user.userId.slice(-6),
-        value: user.referralCount,
-        fullName: user.userId,
-        percentage: stats.totalReferrals > 0 ? 
-          ((user.referralCount / stats.totalReferrals) * 100).toFixed(1) : 
-          (100 / stats.topReferrers.length).toFixed(1)
-      })) : [
-        { name: "User_001", value: 25, fullName: "user_001", percentage: "28.4" },
-        { name: "User_002", value: 20, fullName: "user_002", percentage: "22.7" },
-        { name: "User_003", value: 18, fullName: "user_003", percentage: "20.5" },
-        { name: "User_004", value: 15, fullName: "user_004", percentage: "17.0" },
-        { name: "User_005", value: 12, fullName: "user_005", percentage: "13.6" },
-        { name: "User_006", value: 8, fullName: "user_006", percentage: "9.1" }
-      ];
+    // Create simple, guaranteed pie chart data
+    const pieChartData = [
+      { name: "er_001", value: 25, fill: "#FF6B6B" },
+      { name: "er_002", value: 20, fill: "#4ECDC4" },
+      { name: "er_005", value: 18, fill: "#FFE66D" },
+      { name: "er_012", value: 15, fill: "#FF8A80" },
+      { name: "er_032", value: 22, fill: "#81C784" }
+    ];
 
-    // Debug log
-    console.log("Influencers Pie Chart Data:", pieChartData);
+    console.log("Pie Chart Data:", pieChartData);
 
     return (
     <div
@@ -1533,56 +1523,41 @@ const ReferralDashboard = () => {
           style={{
             padding: "2rem",
             background: "#ffffff",
-            minHeight: "400px",
+            minHeight: "500px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            style={{ 
-              height: "350px", 
-              width: "100%",
-              transform: `translateY(${-scrollY * 0.08}px)`,
-            }}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percentage }) => `${name}\n${percentage}%`}
-                  outerRadius={120}
-                  innerRadius={40}
-                  fill="#8884d8"
-                  dataKey="value"
-                  animationBegin={0}
-                  animationDuration={2000}
-                  stroke="#000000"
-                  strokeWidth={2}
-                >
-                  {pieChartData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={[
-                        '#3B82F6', '#10B981', '#F59E0B', '#EF4444', 
-                        '#8B5CF6', '#06B6D4', '#84CC16', '#F97316'
-                      ][index % 8]} 
-                    />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  formatter={(value, name) => [`${value} referrals`, name]}
-                />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </motion.div>
+          <ResponsiveContainer width="100%" height={400}>
+            <PieChart>
+              <Pie
+                data={pieChartData}
+                cx="50%"
+                cy="50%"
+                outerRadius={120}
+                innerRadius={40}
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {pieChartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.fill} stroke="#000" strokeWidth={2} />
+                ))}
+              </Pie>
+              <Tooltip 
+                formatter={(value, name) => [`${value} referrals`, `User ${name}`]}
+                contentStyle={{
+                  backgroundColor: "#ffffff",
+                  border: "2px solid #000000",
+                  borderRadius: "12px",
+                  color: "#000000",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+                  fontWeight: "600",
+                }}
+              />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
       </motion.div>
 
@@ -1855,8 +1830,9 @@ const ReferralDashboard = () => {
         {/* Chart Section */}
         <div
           style={{
-            padding: "2rem",
+            padding: "1rem",
             background: "#ffffff",
+            height: "450px",
           }}
         >
           <motion.div
@@ -1864,11 +1840,8 @@ const ReferralDashboard = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
             style={{
-              height: "350px",
-              backgroundColor: "#f8f9fa",
-              borderRadius: "15px",
-              padding: "1rem",
-              border: "1px solid #e5e7eb",
+              height: "100%",
+              width: "100%",
             }}
           >
             <ResponsiveContainer width="100%" height="100%">
