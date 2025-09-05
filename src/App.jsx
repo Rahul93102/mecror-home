@@ -1,5 +1,5 @@
 import React from 'react'
-import ReferralDashboard from './components/ReferralDashboard'
+import ReferralDashboard from './components/ReferralDashboard_Clean'
 import './App.css'
 
 function App() {

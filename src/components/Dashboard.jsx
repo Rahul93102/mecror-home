@@ -42,30 +42,25 @@ const Dashboard = () => {
     avgReferrals: 0,
   });
 
-  // Sample adoption probability function for bonus optimization
+  //  adoption probability function for bonus optimization
   const adoptionProb = (bonus) => {
     return Math.min(0.9, 0.1 + (bonus / 1000) * 0.8);
   };
 
-  // Initialize sample data
+  // Dummy add is added to for testing purposes
   useEffect(() => {
     const initializeData = () => {
       try {
-        // Add sample users and referrals to create a meaningful network
         const users = Array.from({ length: 50 }, (_, i) => `user_${i + 1}`);
-
-        // Create referral chains
         for (let i = 0; i < users.length - 1; i++) {
           try {
             if (Math.random() > 0.3) {
-              // 70% chance of referral
               const referrer =
                 users[Math.floor(Math.random() * Math.min(i + 1, 10))];
               network.addReferral(referrer, users[i + 1]);
             }
           } catch (error) {
-            // Skip if would create cycle or duplicate
-            continue;
+            continue; // we can skip for cycle detection
           }
         }
 
@@ -82,8 +77,6 @@ const Dashboard = () => {
 
         const networkStats = network.getNetworkStats();
         setStats(networkStats);
-
-        // Generate simulation data
         const simData = network.simulate(0.3, 30).map((value, index) => ({
           day: index + 1,
           referrals: value,
@@ -91,7 +84,6 @@ const Dashboard = () => {
             index > 0 ? value - network.simulate(0.3, 30)[index - 1] : value,
         }));
         setSimulationData(simData);
-
         setLoading(false);
       } catch (error) {
         console.error("Error initializing data:", error);
@@ -102,7 +94,8 @@ const Dashboard = () => {
     initializeData();
   }, [network]);
 
-  // Animate stats counters
+
+
   useEffect(() => {
     if (!stats) return;
 
@@ -132,6 +125,10 @@ const Dashboard = () => {
     animateValue("avgReferrals", stats.avgReferralsPerUser);
   }, [stats]);
 
+
+
+
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -152,6 +149,11 @@ const Dashboard = () => {
       },
     },
   };
+
+
+
+
+
 
   const StatCard = ({ icon: Icon, title, value, change, color, delay }) => (
     <motion.div
@@ -219,6 +221,7 @@ const Dashboard = () => {
         </h1>
         <p>Advanced insights into your referral ecosystem</p>
       </motion.header>
+
 
       <div className="tab-navigation">
         {[
@@ -334,6 +337,7 @@ const Dashboard = () => {
           </motion.div>
         )}
 
+
         {activeTab === "influencers" && (
           <motion.div
             key="influencers"
@@ -371,6 +375,7 @@ const Dashboard = () => {
                 </div>
               </motion.div>
 
+
               <motion.div
                 className="influencer-section"
                 variants={itemVariants}
@@ -400,6 +405,8 @@ const Dashboard = () => {
                 </div>
               </motion.div>
             </div>
+
+
 
             <motion.div
               className="chart-container"
@@ -435,6 +442,7 @@ const Dashboard = () => {
           </motion.div>
         )}
 
+
         {activeTab === "simulation" && (
           <motion.div
             key="simulation"
@@ -450,6 +458,7 @@ const Dashboard = () => {
                 probability
               </p>
             </motion.div>
+
 
             <div className="simulation-stats">
               <StatCard
@@ -481,6 +490,8 @@ const Dashboard = () => {
                 delay={0.3}
               />
             </div>
+
+
 
             <motion.div
               className="chart-container full-width"
@@ -522,6 +533,8 @@ const Dashboard = () => {
           </motion.div>
         )}
 
+
+
         {activeTab === "optimization" && (
           <motion.div
             key="optimization"
@@ -539,6 +552,8 @@ const Dashboard = () => {
                 Finding the optimal bonus structure to achieve hiring targets
               </p>
             </motion.div>
+
+
 
             <div className="optimization-scenarios">
               {[
@@ -624,5 +639,8 @@ const Dashboard = () => {
     </motion.div>
   );
 };
+
+
+
 
 export default Dashboard;
