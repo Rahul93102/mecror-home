@@ -35,6 +35,26 @@ const animationStyles = `
     0% { left: -100%; }
     100% { left: 100%; }
   }
+  
+  @media (max-width: 768px) {
+    .sidebar-controls {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sidebar-controls button {
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dashboard-header h1 {
+      font-size: 2rem !important;
+    }
+    .dashboard-header p {
+      font-size: 1rem !important;
+    }
+  }
 `;
 
 const ReferralDashboard = () => {
@@ -1550,7 +1570,9 @@ const ReferralDashboard = () => {
       display: 'flex',
       minHeight: '100vh',
       backgroundColor: '#ffffff',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      width: '100vw',
+      overflow: 'hidden'
     }}>
       {/* Sidebar */}
       <motion.div 
@@ -1652,7 +1674,9 @@ const ReferralDashboard = () => {
         width: !sidebarVisible ? '100vw' : `calc(100vw - ${sidebarOpen ? '250px' : '50px'})`
       }}>
         {/* Header */}
-        <div style={{
+        <div 
+          className="dashboard-header"
+          style={{
           background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%)',
           backgroundSize: '200% 200%',
           animation: 'gradient-shift 10s ease infinite',
@@ -1710,6 +1734,92 @@ const ReferralDashboard = () => {
           >
             Analyze and optimize your referral network performance with advanced analytics
           </motion.p>
+
+          {/* Dashboard Controls */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            style={{
+              position: 'absolute',
+              top: '2rem',
+              right: '2rem',
+              display: 'flex',
+              gap: '1rem',
+              zIndex: 10,
+              className: 'sidebar-controls'
+            }}
+          >
+            {/* Sidebar Toggle */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              style={{
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '0.8rem 1.2rem',
+                color: '#ffffff',
+                fontSize: '0.9rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
+                backdropFilter: 'blur(10px)',
+                display: sidebarVisible ? 'block' : 'none'
+              }}
+              title={sidebarOpen ? 'Collapse Sidebar' : 'Expand Sidebar'}
+            >
+              {sidebarOpen ? '← Collapse' : '→ Expand'}
+            </motion.button>
+
+            {/* Full Screen Toggle */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSidebarVisible(!sidebarVisible)}
+              style={{
+                background: sidebarVisible 
+                  ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+                  : 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '0.8rem 1.2rem',
+                color: '#ffffff',
+                fontSize: '0.9rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                boxShadow: sidebarVisible 
+                  ? '0 4px 15px rgba(240, 147, 251, 0.3)'
+                  : '0 4px 15px rgba(67, 233, 123, 0.3)',
+                backdropFilter: 'blur(10px)'
+              }}
+              title={sidebarVisible ? 'Full Screen Mode' : 'Show Sidebar'}
+            >
+              {sidebarVisible ? '⛶ Full Screen' : '☰ Show Menu'}
+            </motion.button>
+
+            {/* View Mode Toggle */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                background: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '0.8rem 1.2rem',
+                color: '#8B4513',
+                fontSize: '0.9rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                boxShadow: '0 4px 15px rgba(255, 236, 210, 0.3)',
+                backdropFilter: 'blur(10px)'
+              }}
+              title="Adjust Layout"
+            >
+              ⚙ Layout
+            </motion.button>
+          </motion.div>
           
           {/* Enhanced floating gradient orbs with CSS animations */}
           <motion.div
@@ -1787,6 +1897,84 @@ const ReferralDashboard = () => {
             }}
           />
         </div>
+
+        {/* Floating Control Panel (when sidebar is hidden) */}
+        {!sidebarVisible && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '20px',
+              transform: 'translateY(-50%)',
+              background: 'linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 100%)',
+              borderRadius: '20px',
+              padding: '1rem',
+              zIndex: 1001,
+              backdropFilter: 'blur(15px)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem'
+            }}
+          >
+            {/* Navigation in floating panel */}
+            {navigationItems.map((item) => (
+              <motion.button
+                key={item.id}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setActiveTab(item.id)}
+                style={{
+                  background: activeTab === item.id 
+                    ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                    : 'transparent',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '0.8rem',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease',
+                  width: '50px',
+                  height: '50px'
+                }}
+                title={item.label}
+              >
+                <item.icon size={20} />
+              </motion.button>
+            ))}
+            
+            {/* Show Sidebar Button */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSidebarVisible(true)}
+              style={{
+                background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '0.8rem',
+                color: '#ffffff',
+                cursor: 'pointer',
+                marginTop: '0.5rem',
+                width: '50px',
+                height: '50px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              title="Show Sidebar"
+            >
+              ☰
+            </motion.button>
+          </motion.div>
+        )}
 
         {/* Content Area */}
         <div style={{ padding: '2rem', width: '100%', maxWidth: '100%' }}>
