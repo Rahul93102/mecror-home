@@ -852,15 +852,16 @@ const ReferralDashboard = () => {
     // Get network reach data with fallback data
     const reachData = Array.from(network.users.size > 0 ? network.users : [
       "user_001", "user_002", "user_003", "user_004", "user_005", 
-      "user_006", "user_007", "user_008", "user_009", "user_010"
+      "user_006", "user_007", "user_008", "user_009", "user_010",
+      "user_011", "user_012", "user_013", "user_014", "user_015"
     ])
       .map((userId, index) => ({
         userId,
-        directReferrals: network.users.size > 0 ? network.getDirectReferrals(userId).length : Math.floor(Math.random() * 15) + 3,
-        totalReach: network.users.size > 0 ? network.getTotalReferralCount(userId) : Math.floor(Math.random() * 25) + 8,
+        directReferrals: network.users.size > 0 ? network.getDirectReferrals(userId).length : Math.floor(Math.random() * 8) + 2,
+        totalReach: network.users.size > 0 ? network.getTotalReferralCount(userId) : Math.floor(Math.random() * 15) + 5,
         reachExpansion: network.users.size > 0 ? 
           network.getTotalReferralCount(userId) - network.getDirectReferrals(userId).length :
-          Math.floor(Math.random() * 10) + 2,
+          Math.floor(Math.random() * 8) + 1,
       }))
       .filter((user) => user.totalReach > 0)
       .sort((a, b) => b.totalReach - a.totalReach);
@@ -871,8 +872,12 @@ const ReferralDashboard = () => {
       reachData.map((user, index) => ({
         userId: user.userId,
         referralCount: user.totalReach,
+        totalReach: user.totalReach,
         rank: index + 1
       }));
+
+    // Debug log
+    console.log("Network Reach Data:", { reachData: reachData.slice(0, 5), topReferrersByReach: topReferrersByReach.slice(0, 5) });
 
     return (
       <div style={{ width: "100%" }}>
@@ -1032,69 +1037,71 @@ const ReferralDashboard = () => {
               }}
             >
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={reachData.slice(0, 12)}>
+                <BarChart data={reachData.slice(0, 12)} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
                   <CartesianGrid
                     strokeDasharray="3 3"
-                    stroke="rgba(0,0,0,0.1)"
+                    stroke="rgba(0,0,0,0.2)"
                   />
                   <XAxis
                     dataKey="userId"
-                    stroke="#64748b"
-                    fontSize={12}
+                    stroke="#000000"
+                    fontSize={11}
+                    fontWeight="600"
                     tickFormatter={(value) => value.slice(-6)}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
                   />
-                  <YAxis stroke="#64748b" fontSize={12} />
+                  <YAxis 
+                    stroke="#000000" 
+                    fontSize={12}
+                    fontWeight="600"
+                    label={{ 
+                      value: 'Referrals', 
+                      angle: -90, 
+                      position: 'insideLeft',
+                      style: { textAnchor: 'middle', fill: '#000000', fontWeight: '600' }
+                    }}
+                  />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: "#ffffff",
-                      border: "1px solid rgba(0,0,0,0.1)",
+                      border: "2px solid #000000",
                       borderRadius: "12px",
-                      color: "#1e293b",
-                      boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+                      color: "#000000",
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
+                      fontWeight: "600",
                     }}
                     formatter={(value, name) => [
                       value,
                       name === "directReferrals"
-                        ? "Direct Referrals"
-                        : "Total Reach",
+                        ? "🎯 Direct Referrals"
+                        : "🌐 Total Network Reach",
                     ]}
-                    labelFormatter={(userId) => `User: ${userId}`}
+                    labelFormatter={(userId) => `👤 User: ${userId}`}
                   />
-                  <Legend />
+                  <Legend 
+                    wrapperStyle={{
+                      fontWeight: "600",
+                      color: "#000000"
+                    }}
+                  />
                   <Bar
                     dataKey="directReferrals"
-                    fill="#43e97b"
+                    fill="#4ecdc4"
                     name="Direct Referrals"
                     radius={[4, 4, 0, 0]}
+                    stroke="#000000"
+                    strokeWidth={1}
                   />
                   <Bar
                     dataKey="totalReach"
-                    fill="#38f9d7"
+                    fill="#ff6b6b"
                     name="Total Network Reach"
                     radius={[4, 4, 0, 0]}
+                    stroke="#000000"
+                    strokeWidth={1}
                   />
-                  <defs>
-                    <linearGradient
-                      id="directGradient"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="0%" stopColor="#ff6b6b" />
-                      <stop offset="100%" stopColor="#ee5a52" />
-                    </linearGradient>
-                    <linearGradient
-                      id="reachGradient"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="0%" stopColor="#4ecdc4" />
-                      <stop offset="100%" stopColor="#44a08d" />
-                    </linearGradient>
-                  </defs>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -1435,234 +1442,350 @@ const ReferralDashboard = () => {
   };
 
   // Influencers Tab
-  const renderInfluencers = () => (
-    <div
-      style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}
-    >
-      {/* Pie Chart Card */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          padding: "2rem",
-          borderRadius: "20px",
-          boxShadow: "0 20px 40px rgba(102, 126, 234, 0.3)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-        }}
-      >
-        <h3
-          style={{
-            background: "linear-gradient(45deg, #ffffff, #f0f0f0)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            color: "transparent",
-            marginBottom: "1.5rem",
-            fontSize: "1.4rem",
-            fontWeight: "700",
-            letterSpacing: "-0.5px",
-          }}
-        >
-          🌟 Top Influencers
-        </h3>
-        <motion.div
-          style={{
-            height: "400px",
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            borderRadius: "15px",
-            padding: "1rem",
-          }}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={
-                  stats?.topReferrers?.slice(0, 5).map((user, index) => ({
-                    name: user.userId.slice(-6),
-                    value: user.referralCount,
-                    fill: [
-                      "#ff6b6b",
-                      "#4ecdc4",
-                      "#ffe66d",
-                      "#ff8a80",
-                      "#81c784",
-                    ][index % 5],
-                  })) || []
-                }
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
-                outerRadius={120}
-                fill="#000000"
-                dataKey="value"
-                animationDuration={1500}
-              >
-                {stats?.topReferrers?.slice(0, 5).map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={
-                      ["#ff6b6b", "#4ecdc4", "#ffe66d", "#ff8a80", "#81c784"][
-                        index % 5
-                      ]
-                    }
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  border: "1px solid rgba(102, 126, 234, 0.3)",
-                  borderRadius: "10px",
-                  color: "#667eea",
-                  backdropFilter: "blur(10px)",
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </motion.div>
-      </motion.div>
+  const renderInfluencers = () => {
+    // Generate pie chart data with fallback
+    const pieChartData = stats?.topReferrers?.length > 0 ? 
+      stats.topReferrers.slice(0, 6).map((user, index) => ({
+        name: user.userId.slice(-6),
+        value: user.referralCount,
+        fullName: user.userId,
+        percentage: stats.totalReferrals > 0 ? 
+          ((user.referralCount / stats.totalReferrals) * 100).toFixed(1) : 
+          (100 / stats.topReferrers.length).toFixed(1)
+      })) : [
+        { name: "User_001", value: 25, fullName: "user_001", percentage: "28.4" },
+        { name: "User_002", value: 20, fullName: "user_002", percentage: "22.7" },
+        { name: "User_003", value: 18, fullName: "user_003", percentage: "20.5" },
+        { name: "User_004", value: 15, fullName: "user_004", percentage: "17.0" },
+        { name: "User_005", value: 12, fullName: "user_005", percentage: "13.6" },
+        { name: "User_006", value: 8, fullName: "user_006", percentage: "9.1" }
+      ];
 
-      {/* Rankings Card */}
+    // Debug log
+    console.log("Influencers Pie Chart Data:", pieChartData);
+
+    return (
+    <div
+      style={{ 
+        display: "grid", 
+        gridTemplateColumns: "1fr 1fr", 
+        gap: "2rem",
+        padding: "1rem"
+      }}
+    >
+      {/* Top Influencers Chart - White with Black Border */}
       <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        initial={{ opacity: 0, x: -30, scale: 0.95 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.1 }}
+        whileHover={{ 
+          scale: 1.02, 
+          y: -5,
+          boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)"
+        }}
         style={{
-          background: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
-          padding: "2rem",
-          borderRadius: "20px",
-          boxShadow: "0 20px 40px rgba(255, 154, 158, 0.3)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
+          background: "#ffffff",
+          borderRadius: "25px",
+          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
+          border: "3px solid #000000",
+          overflow: "hidden",
+          position: "relative"
         }}
       >
-        <h3
-          style={{
-            background: "linear-gradient(45deg, #ffffff, #f0f0f0)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            color: "transparent",
-            marginBottom: "2rem",
-            fontSize: "1.3rem",
-            fontWeight: "700",
-          }}
-        >
-          🏆 Influencer Rankings
-        </h3>
+        {/* Header Section */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            maxHeight: "400px",
-            overflowY: "auto",
-            paddingRight: "0.5rem",
+            padding: "2rem 2rem 1rem 2rem",
+            borderBottom: "2px solid #000000",
+            background: "#ffffff",
           }}
         >
-          {stats?.topReferrers?.slice(0, 8).map((user, index) => (
-            <motion.div
-              key={user.userId}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              whileHover={{ scale: 1.03, x: 10 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "1.2rem",
-                background:
-                  index === 0
-                    ? "linear-gradient(135deg, #ffd700, #ffed4e)"
-                    : "rgba(255, 255, 255, 0.25)",
-                borderRadius: "15px",
-                border:
-                  index === 0
-                    ? "2px solid #ffd700"
-                    : "1px solid rgba(255, 255, 255, 0.3)",
-                backdropFilter: "blur(10px)",
-                boxShadow:
-                  index === 0
-                    ? "0 10px 30px rgba(255, 215, 0, 0.4)"
-                    : "0 5px 15px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+          <motion.h3
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            style={{
+              color: "#000000",
+              marginBottom: "0.5rem",
+              fontSize: "1.6rem",
+              fontWeight: "800",
+              textAlign: "center",
+              margin: 0,
+            }}
+          >
+            🌟 Top Influencers
+          </motion.h3>
+          <p
+            style={{
+              color: "#666666",
+              fontSize: "0.9rem",
+              textAlign: "center",
+              margin: "0.5rem 0 0 0",
+              fontWeight: "500",
+            }}
+          >
+            Performance distribution by influence
+          </p>
+        </div>
+
+        {/* Chart Section */}
+        <div
+          style={{
+            padding: "2rem",
+            background: "#ffffff",
+            minHeight: "400px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            style={{ 
+              height: "350px", 
+              width: "100%",
+              transform: `translateY(${-scrollY * 0.08}px)`,
+            }}
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieChartData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percentage }) => `${name}\n${percentage}%`}
+                  outerRadius={120}
+                  innerRadius={40}
+                  fill="#8884d8"
+                  dataKey="value"
+                  animationBegin={0}
+                  animationDuration={2000}
+                  stroke="#000000"
+                  strokeWidth={2}
+                >
+                  {pieChartData.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={[
+                        '#3B82F6', '#10B981', '#F59E0B', '#EF4444', 
+                        '#8B5CF6', '#06B6D4', '#84CC16', '#F97316'
+                      ][index % 8]} 
+                    />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value, name) => [`${value} referrals`, name]}
+                />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Influencer Rankings - White with Black Border */}
+      <motion.div
+        initial={{ opacity: 0, x: 30, scale: 0.95 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        whileHover={{ 
+          scale: 1.02, 
+          y: -5,
+          boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)"
+        }}
+        style={{
+          background: "#ffffff",
+          borderRadius: "25px",
+          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
+          border: "3px solid #000000",
+          overflow: "hidden",
+          position: "relative"
+        }}
+      >
+        {/* Header Section */}
+        <div
+          style={{
+            padding: "2rem 2rem 1rem 2rem",
+            borderBottom: "2px solid #000000",
+            background: "#ffffff",
+          }}
+        >
+          <motion.h3
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            style={{
+              color: "#000000",
+              marginBottom: "0",
+              fontSize: "1.5rem",
+              fontWeight: "800",
+              textAlign: "center",
+            }}
+          >
+            🏆 Influencer Rankings
+          </motion.h3>
+        </div>
+
+        {/* Rankings Section */}
+        <div
+          style={{
+            padding: "2rem",
+            background: "#ffffff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              maxHeight: "400px",
+              overflowY: "auto",
+            }}
+          >
+            {(stats?.topReferrers?.slice(0, 8) || [
+              { userId: "user_001", referralCount: 25 },
+              { userId: "user_002", referralCount: 20 },
+              { userId: "user_003", referralCount: 18 },
+              { userId: "user_004", referralCount: 15 },
+              { userId: "user_005", referralCount: 12 },
+              { userId: "user_006", referralCount: 10 },
+              { userId: "user_007", referralCount: 8 },
+              { userId: "user_008", referralCount: 6 },
+            ]).map((user, index) => (
+              <motion.div
+                key={user.userId}
+                initial={{ opacity: 0, x: -30, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.7 + index * 0.08 }}
+                whileHover={{ 
+                  scale: 1.05, 
+                  y: -3,
+                  boxShadow: "0 15px 30px rgba(0, 0, 0, 0.1)"
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "1.5rem",
+                  background: "#ffffff",
+                  borderRadius: "15px",
+                  border: `2px solid ${
+                    index === 0 ? "#ffd700" :
+                    index === 1 ? "#c0c0c0" :
+                    index === 2 ? "#cd7f32" : "#000000"
+                  }`,
+                  boxShadow: `0 8px 20px ${
+                    index === 0 ? "rgba(255, 215, 0, 0.3)" :
+                    index === 1 ? "rgba(192, 192, 192, 0.3)" :
+                    index === 2 ? "rgba(205, 127, 50, 0.3)" : "rgba(0, 0, 0, 0.08)"
+                  }`,
+                  position: "relative",
+                  overflow: "hidden"
+                }}
               >
+                {/* Rank Badge */}
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "50%",
+                      background: 
+                        index === 0 ? "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)" :
+                        index === 1 ? "linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%)" :
+                        index === 2 ? "linear-gradient(135deg, #cd7f32 0%, #daa520 100%)" :
+                        "linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)",
+                      color: "#ffffff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1.2rem",
+                      fontWeight: "800",
+                      boxShadow: "0 6px 18px rgba(0, 0, 0, 0.2)",
+                      textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
+                    }}
+                  >
+                    {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                  </motion.div>
+
+                  {/* User Info */}
+                  <div>
+                    <div
+                      style={{
+                        color: "#000000",
+                        fontWeight: "800",
+                        fontSize: "1.1rem",
+                        marginBottom: "0.25rem",
+                      }}
+                    >
+                      {user.userId}
+                    </div>
+                    <div
+                      style={{
+                        color: "#666666",
+                        fontSize: "0.85rem",
+                        fontWeight: "600",
+                      }}
+                    >
+                      💎 Score: {(user.referralCount * 10).toFixed(1)} ⭐
+                    </div>
+                  </div>
+                </div>
+
+                {/* Performance Metrics */}
                 <motion.div
-                  whileHover={{ scale: 1.2 }}
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    color: [
+                      index === 0 ? "#ffd700" : "#000000", 
+                      index === 0 ? "#ffed4e" : "#333333", 
+                      index === 0 ? "#ffd700" : "#000000"
+                    ]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: index * 0.3,
+                  }}
                   style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    background:
-                      index === 0
-                        ? "linear-gradient(135deg, #ff6b6b, #ee5a52)"
-                        : "linear-gradient(135deg, #4ecdc4, #44a08d)",
-                    color: "#ffffff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1rem",
-                    fontWeight: "700",
-                    boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
+                    textAlign: "right",
                   }}
                 >
-                  #{index + 1}
-                </motion.div>
-                <div>
                   <div
                     style={{
-                      color:
-                        index === 0 ? "#b8860b" : "rgba(255, 255, 255, 0.95)",
-                      fontWeight: "700",
-                      fontSize: "1rem",
+                      fontSize: "1.6rem",
+                      fontWeight: "900",
                       marginBottom: "0.25rem",
                     }}
                   >
-                    {user.userId}
+                    {user.referralCount}
                   </div>
                   <div
                     style={{
-                      color:
-                        index === 0
-                          ? "rgba(184, 134, 11, 0.8)"
-                          : "rgba(255, 255, 255, 0.7)",
-                      fontSize: "0.85rem",
-                      fontWeight: "500",
+                      fontSize: "0.8rem",
+                      fontWeight: "600",
+                      color: "#666666",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
                     }}
                   >
-                    Score: {(user.referralCount * 10).toFixed(1)} ⭐
+                    referrals
                   </div>
-                </div>
-              </div>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-                style={{
-                  color: index === 0 ? "#b8860b" : "rgba(255, 255, 255, 0.95)",
-                  fontWeight: "800",
-                  fontSize: "1.2rem",
-                  textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                {user.referralCount} refs
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </motion.div>
     </div>
-  );
+    );
+  };
 
   // Simulation Tab
   const renderSimulation = () => (
