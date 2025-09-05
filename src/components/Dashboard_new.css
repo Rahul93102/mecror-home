@@ -1,7 +1,7 @@
 .dashboard {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 20%, #ffffff 100%);
-  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
   color: #1e293b;
   overflow-x: hidden;
   line-height: 1.6;
@@ -37,8 +37,7 @@
   margin: 24px;
   border-radius: 24px;
   border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
@@ -111,7 +110,7 @@
 }
 
 .tab-button::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
@@ -162,8 +161,7 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(226, 232, 240, 0.8);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -172,13 +170,18 @@
 }
 
 .stat-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    currentColor 50%,
+    transparent 100%
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -189,8 +192,7 @@
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
     0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
@@ -290,8 +292,7 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
   padding: 32px;
-  box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(226, 232, 240, 0.8);
   transition: all 0.3s ease;
@@ -299,8 +300,7 @@
 
 .chart-container:hover {
   transform: translateY(-2px);
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
     0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
@@ -404,8 +404,7 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
   padding: 28px;
-  box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
@@ -478,8 +477,7 @@
   padding: 32px;
   margin-bottom: 32px;
   text-align: center;
-  box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
@@ -532,8 +530,7 @@
   padding: 32px;
   margin-bottom: 32px;
   text-align: center;
-  box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
@@ -575,7 +572,7 @@
 }
 
 .scenario-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -667,37 +664,37 @@
     margin: 16px;
     padding: 32px 24px;
   }
-  
+
   .dashboard-header h1 {
     font-size: 2.25rem;
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .tab-navigation {
     flex-wrap: wrap;
     margin: 16px;
     gap: 6px;
   }
-  
+
   .tab-button {
     flex: 1;
     min-width: 140px;
     justify-content: center;
   }
-  
+
   .tab-content {
     padding: 0 16px 32px 16px;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .influencers-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .optimization-scenarios {
     grid-template-columns: 1fr;
   }
@@ -707,27 +704,27 @@
   .dashboard {
     padding: 0;
   }
-  
+
   .dashboard-header {
     margin: 12px;
     padding: 24px 16px;
     border-radius: 16px;
   }
-  
+
   .tab-navigation {
     margin: 12px;
     padding: 6px;
     border-radius: 16px;
   }
-  
+
   .tab-content {
     padding: 0 12px 24px 12px;
   }
-  
+
   .functionality-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .simulation-params {
     grid-template-columns: repeat(2, 1fr);
   }

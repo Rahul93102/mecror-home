@@ -16,15 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src/**/*",
-    "src/**/*.jsx",
-    "src/**/*.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/backend/**",
-    "../backend/**"
-  ]
+  "include": ["src/**/*", "src/**/*.jsx", "src/**/*.js"],
+  "exclude": ["node_modules", "dist", "**/backend/**", "../backend/**"]
 }

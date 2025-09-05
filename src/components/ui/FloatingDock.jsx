@@ -1,20 +1,31 @@
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { useRef, useState } from "react";
 
 // Custom icon components to replace Tabler icons
 const MenuIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <line x1="3" y1="6" x2="21" y2="6"></line>
     <line x1="3" y1="12" x2="21" y2="12"></line>
     <line x1="3" y1="18" x2="21" y2="18"></line>
   </svg>
 );
 
-export const FloatingDock = ({
-  items,
-  desktopClassName,
-  mobileClassName
-}) => {
+export const FloatingDock = ({ items, desktopClassName, mobileClassName }) => {
   return (
     <>
       <FloatingDockDesktop items={items} className={desktopClassName} />
@@ -23,10 +34,7 @@ export const FloatingDock = ({
   );
 };
 
-const FloatingDockMobile = ({
-  items,
-  className
-}) => {
+const FloatingDockMobile = ({ items, className }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -39,14 +47,14 @@ const FloatingDockMobile = ({
           }
         `}
       </style>
-      <div 
+      <div
         className="floating-dock-mobile"
         style={{
           position: "fixed",
           display: "block",
           bottom: "32px",
           right: "32px",
-          zIndex: 50
+          zIndex: 50,
         }}
       >
         <AnimatePresence>
@@ -60,7 +68,7 @@ const FloatingDockMobile = ({
                 marginBottom: "8px",
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px"
+                gap: "8px",
               }}
             >
               {items.map((item, idx) => (
@@ -93,10 +101,12 @@ const FloatingDockMobile = ({
                       backgroundColor: "#f9fafb",
                       border: "none",
                       cursor: "pointer",
-                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                     }}
                   >
-                    <div style={{ height: "16px", width: "16px" }}>{item.icon}</div>
+                    <div style={{ height: "16px", width: "16px" }}>
+                      {item.icon}
+                    </div>
                   </button>
                 </motion.div>
               ))}
@@ -115,7 +125,7 @@ const FloatingDockMobile = ({
             backgroundColor: "#f9fafb",
             border: "none",
             cursor: "pointer",
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
           }}
         >
           <MenuIcon />
@@ -125,10 +135,7 @@ const FloatingDockMobile = ({
   );
 };
 
-const FloatingDockDesktop = ({
-  items,
-  className
-}) => {
+const FloatingDockDesktop = ({ items, className }) => {
   let mouseX = useMotionValue(Infinity);
   return (
     <motion.div
@@ -143,14 +150,15 @@ const FloatingDockDesktop = ({
         borderRadius: "16px",
         backgroundColor: "#f9fafb",
         padding: "0 16px 12px 16px",
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        boxShadow:
+          "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
         border: "1px solid rgba(255, 255, 255, 0.2)",
         backdropFilter: "blur(10px)",
         position: "fixed",
         bottom: "32px",
         left: "50%",
         transform: "translateX(-50%)",
-        zIndex: 50
+        zIndex: 50,
       }}
     >
       <style>
@@ -162,13 +170,13 @@ const FloatingDockDesktop = ({
           }
         `}
       </style>
-      <div 
+      <div
         className="floating-dock-desktop"
         style={{
           display: "flex",
           alignItems: "end",
           gap: "16px",
-          height: "100%"
+          height: "100%",
         }}
       >
         {items.map((item) => (
@@ -179,12 +187,7 @@ const FloatingDockDesktop = ({
   );
 };
 
-function IconContainer({
-  mouseX,
-  title,
-  icon,
-  onClick
-}) {
+function IconContainer({ mouseX, title, icon, onClick }) {
   let ref = useRef(null);
 
   let distance = useTransform(mouseX, (val) => {
@@ -196,7 +199,11 @@ function IconContainer({
   let heightTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
 
   let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 40, 20]);
-  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 40, 20]);
+  let heightTransformIcon = useTransform(
+    distance,
+    [-150, 0, 150],
+    [20, 40, 20]
+  );
 
   let width = useSpring(widthTransform, {
     mass: 0.1,
@@ -223,19 +230,19 @@ function IconContainer({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <button 
+    <button
       onClick={onClick}
       style={{
         background: "none",
         border: "none",
         padding: 0,
-        cursor: "pointer"
+        cursor: "pointer",
       }}
     >
       <motion.div
         ref={ref}
-        style={{ 
-          width, 
+        style={{
+          width,
           height,
           position: "relative",
           display: "flex",
@@ -243,7 +250,7 @@ function IconContainer({
           alignItems: "center",
           justifyContent: "center",
           borderRadius: "50%",
-          backgroundColor: "#e5e7eb"
+          backgroundColor: "#e5e7eb",
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -266,7 +273,7 @@ function IconContainer({
                 fontSize: "12px",
                 whiteSpace: "pre",
                 color: "#374151",
-                zIndex: 10
+                zIndex: 10,
               }}
             >
               {title}
@@ -274,12 +281,12 @@ function IconContainer({
           )}
         </AnimatePresence>
         <motion.div
-          style={{ 
-            width: widthIcon, 
+          style={{
+            width: widthIcon,
             height: heightIcon,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           {icon}

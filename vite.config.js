@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,13 +10,13 @@ export default defineConfig({
   server: {
     fs: {
       strict: true,
-      allow: ['.'],
-      deny: ['**/backend/**']
-    }
+      allow: ["."],
+      deny: ["**/backend/**"],
+    },
   },
-  root: '.',
-  base: './',
+  root: ".",
+  base: "./",
   build: {
-    outDir: 'dist',
-  }
-})
+    outDir: "dist",
+  },
+});
